@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  dev:
+    image: node:9.5
+    command: bash
+    working_dir: /app
+    user: '1000:1000'
+    volumes:
+      - .:/app
+  index:
+    image: node:9.5
+    command: node index.js
+    working_dir: /app
+    user: '1000:1000'
+    volumes:
+      - .:/app
