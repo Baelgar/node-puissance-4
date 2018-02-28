@@ -19,6 +19,41 @@ const board = [
     [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
 ]
 
+const winningCombo = []
+const winningList = generateComboListWin()
+
+// console.log(winningList)
+
+
+function generateComboListWin(){
+    for(k=0;k<=44;k++){
+        const combinaison = generateCombo()
+        // console.log(combinaison)
+        winningCombo.push(combinaison)
+    }
+
+    return winningCombo
+}
+
+
+function generateCombo(){
+    const comb = []
+    //i = indice ligne
+    //j = indice colonne
+    for(i=5;i-3 >= 0;i--){
+        for(j=0;j+3 <=6;j++){
+            // console.log(i,j+3)
+            comb.push(board[i][j])
+            comb.push(board[i][j+1])
+            comb.push(board[i][j+2])
+            comb.push(board[i][j+3])
+        }
+    }
+    console.log(comb)
+    return comb
+}
+
+
 playGame()
 
 function playGame() {
