@@ -19,11 +19,27 @@ const board = [
     [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
 ]
 
-
-
 playGame()
 
-function playGame() {
+function playGame(){
+     game()
+    
+    if(game() == true){
+         prompt("Voulez-vous lancer une nouvelle partie ?\n yes/y/oui/o  pour lancer une nouvelle partie.\n no/n/non pour stopper le jeu.", answer => {
+             if(answer == "yes" || answer == "y" || answer == "oui" || answer == "o"){
+                console.log("Nouvelle partie")
+                game()
+             }
+             else if(answer == "no" || answer == "n" || answer == "non"){
+                console.log("Fin de la partie")
+                process.exit()
+             }
+         })
+    }
+
+}
+
+function game() {
     const state = {
         board: board,
         turn: 0,
@@ -43,26 +59,30 @@ function playGame() {
         prompt(question, answer => {
             console.log('commande : ' + answer)
 
-        /**
-         GESTION DE LAFFICHAGE DES COUPS DANS LE TABLEAU
+            /**
+             GESTION DE LAFFICHAGE DES COUPS DANS LE TABLEAU
 
-         **/
+             **/
 
-        if(answer >= '1' && answer <= '7'){
-            getTokenInBoard(tokenPlayer, answer)
-            display(board)
-            winningComboVerification()
-            if(winningComboVerification() != true){
-                state.turn++
+            if(answer >= '1' && answer <= '7'){
+                getTokenInBoard(tokenPlayer, answer)
+                display(board)
+                winningComboVerification()
+                if(winningComboVerification() != true){
+                    state.turn++
+                    promptNextMove(state)
+                }
+                else{
+                    console.log(displayPlayer + " a gagné la partie")
+                    return true
+                }
+
+            }
+            else{
                 promptNextMove(state)
             }
 
-        }
-        else{
-            promptNextMove(state)
-        }
-
-    })
+        })
     }
 
     function getPlayerForState(state) {
@@ -153,12 +173,12 @@ function playGame() {
             if(i+3 <= 5){
                 // A gagne la partie
                 if(board[i+3][0] == "A" && board[i+2][0] == "A" && board[i+1][0] == "A" && board[i][0] == "A"){
-                    console.log("A gagne la partie")
+
                     return true
                 }
                 //B gagne la partie
                 else if(board[i+3][0] == "B" && board[i+2][0] == "B" && board[i+1][0] == "B" && board[i][0] == "B"){
-                    console.log("B gagne la partie")
+
                     return true
                 }
                 else{
@@ -172,12 +192,12 @@ function playGame() {
                 if(j-3 >= 0){
                     //A gagne la partie
                     if(board[i][j] == "A" && board[i][j-1] == "A" && board[i][j-2] == "A" && board[i][j-3] == "A"){
-                        console.log("A gagne la partie")
+
                         return true
                     }
                     //B gagne la partie
                     if(board[i][j] == "B" && board[i][j-1] == "B" && board[i][j-2] == "B" && board[i][j-3] == "B"){
-                        console.log("B gagne la partie")
+
                         return true
                     }
                     else{
@@ -188,12 +208,12 @@ function playGame() {
                 else if(j+3 <= 6){
                     //A gagne la partie
                     if(board[i][j] == "A" && board[i][j+1] == "A" && board[i][j+2] == "A" && board[i][j+3] == "A"){
-                        console.log("A gagne la partie")
+
                         return true
                     }
                     //B gagne la partie
                     if(board[i][j] == "B" && board[i][j+1] == "B" && board[i][j+2] == "B" && board[i][j+3] == "B"){
-                        console.log("B gagne la partie")
+                     1
                         return true
                     }
                     else{
@@ -201,7 +221,7 @@ function playGame() {
                     }
                 }
 
-                
+
             }
         }
 
@@ -219,7 +239,7 @@ function prompt(question, callback) {
 function display(board) {
     board.forEach(row => {
         row.forEach(cell => {
-        write(String(cell))
+        write('['+String(cell)+']')
 })
     write(String("\n"))
 })
