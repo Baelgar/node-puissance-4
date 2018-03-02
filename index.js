@@ -19,39 +19,6 @@ const board = [
     [CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY, CELL_EMPTY],
 ]
 
-const winningCombo = []
-const winningList = generateComboListWin()
-
-// console.log(winningList)
-
-
-function generateComboListWin(){
-    for(k=0;k<=44;k++){
-        const combinaison = generateCombo()
-        // console.log(combinaison)
-        winningCombo.push(combinaison)
-    }
-
-    return winningCombo
-}
-
-
-function generateCombo(){
-    const comb = []
-    //i = indice ligne
-    //j = indice colonne
-    for(i=5;i-3 >= 0;i--){
-        for(j=0;j+3 <=6;j++){
-            // console.log(i,j+3)
-            comb.push(board[i][j])
-            comb.push(board[i][j+1])
-            comb.push(board[i][j+2])
-            comb.push(board[i][j+3])
-        }
-    }
-    console.log(comb)
-    return comb
-}
 
 
 playGame()
@@ -66,15 +33,6 @@ function playGame() {
 
     function playNextMove(state) {
         promptNextMove(state)
-        // isQuit
-        // move = parseMove(cmd)
-        // validation = validateMove(move)
-        // if (validation.isValid) {
-        //   applyMove(state, validation.move)
-        // } else {
-        //   display()
-        //   promptNextMove(state)
-        // }
     }
 
     function promptNextMove(state) {
@@ -90,12 +48,15 @@ function playGame() {
 
          **/
 
-
         if(answer >= '1' && answer <= '7'){
             getTokenInBoard(tokenPlayer, answer)
             display(board)
-            state.turn++
-            promptNextMove(state)
+            winningComboVerification()
+            if(winningComboVerification() != true){
+                state.turn++
+                promptNextMove(state)
+            }
+
         }
         else{
             promptNextMove(state)
@@ -184,18 +145,80 @@ function playGame() {
         promptNextMove(state)
         state.turn++
     }
-}
+
+    function winningComboVerification(){
+        for(i=5;i >= 0;i--){
+
+            //Vérifie si on peut faire un combo gagnant vertical
+            if(i+3 <= 5){
+                // A gagne la partie
+                if(board[i+3][0] == "A" && board[i+2][0] == "A" && board[i+1][0] == "A" && board[i][0] == "A"){
+                    console.log("A gagne la partie")
+                    return true
+                }
+                //B gagne la partie
+                else if(board[i+3][0] == "B" && board[i+2][0] == "B" && board[i+1][0] == "B" && board[i][0] == "B"){
+                    console.log("B gagne la partie")
+                    return true
+                }
+                else{
+                    state.turn++
+                }
+            }
+
+            for(j=0;j <= 6;j++){
+
+                //Vérifie si on peut faire un combo horizontal vers la gauche
+                if(j-3 >= 0){
+                    //A gagne la partie
+                    if(board[i][j] == "A" && board[i][j-1] == "A" && board[i][j-2] == "A" && board[i][j-3] == "A"){
+                        console.log("A gagne la partie")
+                        return true
+                    }
+                    //B gagne la partie
+                    if(board[i][j] == "B" && board[i][j-1] == "B" && board[i][j-2] == "B" && board[i][j-3] == "B"){
+                        console.log("B gagne la partie")
+                        return true
+                    }
+                    else{
+                        state.turn++
+                    }
+                }
+                //Vérifie si on peut faire un combo horizontal vers la droite
+                else if(j+3 <= 6){
+                    //A gagne la partie
+                    if(board[i][j] == "A" && board[i][j+1] == "A" && board[i][j+2] == "A" && board[i][j+3] == "A"){
+                        console.log("A gagne la partie")
+                        return true
+                    }
+                    //B gagne la partie
+                    if(board[i][j] == "B" && board[i][j+1] == "B" && board[i][j+2] == "B" && board[i][j+3] == "B"){
+                        console.log("B gagne la partie")
+                        return true
+                    }
+                    else{
+                        state.turn++
+                    }
+                }
+
+                
+            }
+        }
+
+        state.turn++
+
+    }
+
+    }
 
 function prompt(question, callback) {
     rl.question(question, callback)
 }
 
-// display(board)
 
 function display(board) {
     board.forEach(row => {
         row.forEach(cell => {
-        // write('' + cell)
         write(String(cell))
 })
     write(String("\n"))
@@ -205,18 +228,3 @@ function display(board) {
 function write(msg) {
     process.stdout.write(msg)
 }
-
-// run('> ')
-//
-// function run(question) {
-//   ask()
-//
-//   function ask() {
-//     rl.question(question, onAnswer)
-//   }
-//
-//   function onAnswer(answer) {
-//     console.log(answer)
-//     ask()
-//   }
-// }

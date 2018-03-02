@@ -15,3 +15,6 @@ services:
     user: '1000:1000'
     volumes:
       - .:/app
+
+  mongo:
+    image: mongo:3.6
