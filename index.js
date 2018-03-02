@@ -23,7 +23,7 @@ playGame()
 
 function playGame(){
      game()
-    
+
     if(game() == true){
          prompt("Voulez-vous lancer une nouvelle partie ?\n yes/y/oui/o  pour lancer une nouvelle partie.\n no/n/non pour stopper le jeu.", answer => {
              if(answer == "yes" || answer == "y" || answer == "oui" || answer == "o"){
